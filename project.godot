@@ -1,0 +1,49 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Control",
+"class": "Joystick",
+"language": "GDScript",
+"path": "res://Joystick/Joystick.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Test/Player.gd"
+} ]
+_global_script_class_icons={
+"Joystick": "",
+"Player": ""
+}
+
+[application]
+
+config/name="Virtual Joystick"
+run/main_scene="res://Test/Test.tscn"
+config/icon="res://icon.png"
+
+[display]
+
+window/energy_saving/keep_screen_on=false
+window/handheld/orientation="sensor_landscape"
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"
