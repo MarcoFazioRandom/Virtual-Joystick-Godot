@@ -2,7 +2,7 @@
 A simple virtual joystick for touchscreens, for both 2D and 3D games, with useful options.
 
 <p align="center"> 
-	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/v2.0/preview_icon.png" width="400">
+	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/v2.0/preview_icon.png" width="300">
 	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/v2.0/preview_1.png" width="400">
 </p>
 
