@@ -8,12 +8,12 @@ var is_working := false
 # The joystick output.
 var output := Vector2.ZERO
 
-# STATIC: The joystick doesn't move.
-# MOVING: Every time the joystick area is pressed, the joystick position is set on the touched position.
+# FIXED: The joystick doesn't move.
+# DYNAMIC: Every time the joystick area is pressed, the joystick position is set on the touched position.
 # FOLLOWING: If the finger moves outside the joystick background, the joystick follows it.
-enum Joystick_mode {STATIC, MOVING, FOLLOWING}
+enum Joystick_mode {FIXED, DYNAMIC, FOLLOWING}
 
-export(Joystick_mode) var joystick_mode := Joystick_mode.STATIC
+export(Joystick_mode) var joystick_mode := Joystick_mode.FIXED
 
 # REAL: return a vector with a lenght beetween 0 (deadzone) and 1; useful for implementing different velocity or acceleration.
 # NORMALIZED: return a normalized vector.
@@ -42,7 +42,7 @@ onready var _original_color : Color = _handle.modulate
 onready var _original_position : Vector2 = _background.rect_position
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch and (joystick_mode == Joystick_mode.MOVING or joystick_mode == Joystick_mode.FOLLOWING):
+	if event is InputEventScreenTouch and (joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING):
 		if event.is_pressed():
 			var new_pos = event.position - _background.rect_size / 2
 			_background.rect_position = new_pos
