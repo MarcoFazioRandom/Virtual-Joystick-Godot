@@ -12,21 +12,21 @@ Made with Godot Engine: https://godotengine.org
 
 <img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/master/preview_2.png" width="300">
 
-- UI mode: 
+- Joystick mode: 
 	- Static: The joystick doesn't move. 
 	- Moving: Every time the joystick area is pressed, the joystick position is set on the touched position. 
 	- Following: If the finger moves outside the joystick background, the joystick follows it.  
 
 - Vector mode: 
-	- Normalized: return a normalized vector. 
 	- Real: return a vector with a lenght beetween 0 and 1; useful for implementing different velocity or acceleration.  
+	- Normalized: return a normalized vector. 
 
 - Directions: The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.  
-- Simmetry: It changes the angle of simmetry of the directions.  
+- Simmetry Angle: the angle of simmetry of the directions.  
 
-- Dead zone: When the joystick value is less than the deadzone, the output is zero.  
+- Dead zone: If the handle is inside this range, in proportion to the background size, the output is zero.
 
-- Clamp zone: The max distance the button can reach from the center.  
+- Clamp zone: The max distance the handle can reach, in proportion to the background size.
 
 ### HELP:  
 - The Control parent of the joystick is the area in which the joystick can move in MOVING or FOLLOWING mode.  
