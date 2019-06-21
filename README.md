@@ -29,7 +29,7 @@ Made with Godot Engine: https://godotengine.org
 - Clamp zone: The max distance the handle can reach, in proportion to the background size.
 
 ### HELP:  
-- The Control parent of the joystick is the area in which the joystick can move in MOVING or FOLLOWING mode.  
+- The Control parent of the joystick is the area in which the joystick can move in Dynamic or Following mode.  
 - For moving the joystick inside is area, select it, right click and turn on "Editable Children" and simply move the 'Background' node.  - With "Editable Children" turned on you can also edit the joystick textures and colors.  
 - An example scene is provided in the "Test" folder.  
 - To be able to use the joystick with the mouse, you have to go to Project settings -> Input Devices -> Pointing, and turn on the option "emulate touch from mouse".  
