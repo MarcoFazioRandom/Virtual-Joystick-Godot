@@ -13,8 +13,8 @@ Made with Godot Engine: https://godotengine.org
 <img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/master/preview_2.png" width="300">
 
 - UI mode: 
-	- Static: The joystick doesn't move. 
-	- Moving: Every time the joystick area is pressed, the joystick position is set on the touched position. 
+	- Fixed: The joystick doesn't move. 
+	- Dynamic: Every time the joystick area is pressed, the joystick position is set on the touched position. 
 	- Following: If the finger moves outside the joystick background, the joystick follows it.  
 
 - Vector mode: 
