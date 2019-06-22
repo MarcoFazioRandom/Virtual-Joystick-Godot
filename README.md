@@ -35,4 +35,4 @@ Made with Godot Engine: https://godotengine.org
 - To be able to use the joystick with the mouse, you have to go to Project settings -> Input Devices -> Pointing, and turn on the option "emulate touch from mouse".  
 
 ### HOW TO USE:  
-In your Player scene, add a CanvasLayer node as a child of it and name it "UI", it'll contain all the UI elements of the player, then add the Joystick scene as a child of the UI node and move it where you prefer (remember to turn on "Editable Children"). 
+Create a CanvasLayer node and name it "UI", it'll contain all the UI elements, then add the Joystick scene as a child of the UI node and move it where you prefer (remember to turn on "Editable Children"). 
