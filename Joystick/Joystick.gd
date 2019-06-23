@@ -28,7 +28,7 @@ export(Color) var _pressed_color := Color.gray
 export(int, 0, 12) var directions := 0
 
 # It changes the angle of simmetry of the directions.
-export(int, 0, 359) var simmetry_angle := 90
+export(int, -180, 180) var simmetry_angle := 90
 
 #If the handle is inside this range, in proportion to the background size, the output is zero.
 export(float, 0, 0.5) var dead_zone := 0.2;
