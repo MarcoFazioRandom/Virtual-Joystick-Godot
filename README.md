@@ -2,15 +2,15 @@
 A simple virtual joystick for touchscreens, for both 2D and 3D games, with useful options.
 
 <p align="center"> 
-	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/master/preview_icon.png" width="300">
-	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/master/preview_1.png" width="400">
+	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_icon.png" width="300">
+	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_1.png" width="400">
 </p>
 
 Made with Godot Engine: https://godotengine.org
 
 ### OPTIONS:  
 
-<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Godot-Virtual-Joystick/master/preview_2.png" width="300">
+<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_2.png" width="300">
 
 - Joystick mode: 
 	- Fixed: The joystick doesn't move. 
