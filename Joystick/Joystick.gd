@@ -25,10 +25,10 @@ export(Vector_mode) var vector_mode := Vector_mode.REAL
 export(Color) var _pressed_color := Color.gray
 
 # The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.
-export(int) var directions := 0
+export(int, 0, 12) var directions := 0
 
 # It changes the angle of simmetry of the directions.
-export(int) var simmetry_angle := 90
+export(int, 0, 359) var simmetry_angle := 90
 
 #If the handle is inside this range, in proportion to the background size, the output is zero.
 export(float, 0, 0.5) var dead_zone := 0.2;
