@@ -49,7 +49,7 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			_background.rect_position = _original_position
 
-func _on_Background_gui_input(event: InputEvent) -> void:
+func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			_handle.modulate = _pressed_color
@@ -60,7 +60,7 @@ func _on_Background_gui_input(event: InputEvent) -> void:
 			_handle.modulate = _original_color
 	
 	if event is InputEventScreenDrag:
-		var vector : Vector2 = event.position - _background.rect_size / 2
+		var vector : Vector2 = event.position - _background.rect_position
 		var dead_size = dead_zone * _background.rect_size.x / 2
 		if vector.length() < dead_size:
 			is_working = false
