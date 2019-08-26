@@ -10,6 +10,7 @@ anchor_bottom = 1.0
 margin_right = -524.0
 margin_bottom = -100.0
 script = ExtResource( 1 )
+[connection signal="gui_input" from="Joystick" to="." method="_on_gui_input"]
 
 [node name="Background" type="TextureRect" parent="."]
 modulate = Color( 1, 1, 1, 0.784314 )
@@ -42,4 +43,3 @@ rect_pivot_offset = Vector2( 50, 50 )
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
-[connection signal="gui_input" from="Background" to="." method="_on_Background_gui_input"]
