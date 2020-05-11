@@ -48,6 +48,10 @@ onready var _original_color : Color = _handle.modulate
 onready var _original_position : Vector2 = _background.rect_position
 
 func _input(event: InputEvent) -> void:
+	_check_container_input(event)
+	_check_background_input(event)
+
+func _check_container_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and _is_valid_index(event.index) and \
 	(joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING):
 		if event.is_pressed() and _is_within_rect(event.position):
@@ -59,8 +63,6 @@ func _input(event: InputEvent) -> void:
 			_background.rect_position = _original_position
 			_reset_input_index()
 			_is_valid_event = false
-
-	_check_background_input(event)
 
 func _check_background_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and _is_valid_index(event.index):
@@ -77,7 +79,8 @@ func _check_background_input(event: InputEvent) -> void:
 			_is_valid_event = false
 	
 	if event is InputEventScreenDrag and _is_valid_index(event.index) and _is_valid_event:
-		var event_position = event.position - _background.rect_global_position
+#		var event_position = event.position - _background.rect_global_position
+		var event_position = (event.position - _background.rect_global_position) / _background.rect_scale
 		var vector : Vector2 = event_position - _background.rect_size / 2
 		var dead_size = dead_zone * _background.rect_size.x / 2
 		if vector.length() < dead_size:
@@ -125,25 +128,27 @@ func _directional_vector(vector: Vector2, n_directions: int, simmetry_angle := P
 
 # Check whether the position is within the boundaries of the main rect
 func _is_within_rect(position: Vector2) -> bool:
-	# Improve to handle the circle instead a square
-	var is_within_x = position.x > rect_position.x and position.x < (rect_position.x + rect_size.x)
-	var is_within_y = position.y > rect_position.y and position.y < (rect_position.y + rect_size.y)
+	var top_right = rect_position #rect_global_position
+	var bottom_right = rect_position + rect_size #rect_global_position
 
-	if is_within_x and is_within_y:
-		return true
-
-	return false
+	return _is_within_boundary(position, top_right, bottom_right)
 
 # Check whether the position is within the boundaries of the background rect
-func _is_within_background_rect(_position: Vector2) -> bool:
+func _is_within_background_rect(position: Vector2) -> bool:
+	var offset = (Vector2.ONE - _background.rect_scale) * (_background.rect_pivot_offset)
+	var size = _background.rect_size * _background.rect_scale
+
+	var top_right = _background.rect_global_position# + offset
+	var bottom_right = _background.rect_global_position + size
+
+	return _is_within_boundary(position, top_right, bottom_right)
+
+func _is_within_boundary(position: Vector2, top_right: Vector2, bottom_left: Vector2) -> bool:
 	# Improve to handle the circle instead a square
-	var is_within_x: bool = _position.x >= _background.rect_global_position.x and _position.x <= (_background.rect_global_position.x + _background.rect_size.x)
-	var is_within_y: bool = _position.y >= _background.rect_global_position.y and _position.y <= (_background.rect_global_position.y + _background.rect_size.y)
+	var is_within_x: bool = (top_right.x <= position.x and position.x <= bottom_left.x)
+	var is_within_y: bool = (top_right.y <= position.y and position.y <= bottom_left.y)
 
-	if is_within_x and is_within_y:
-		return true
-
-	return false
+	return is_within_x and is_within_y
 
 # Update the current finger index
 func _set_input_index(index: int):
