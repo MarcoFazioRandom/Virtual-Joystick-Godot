@@ -8,6 +8,12 @@ var is_working := false
 # The joystick output.
 var output := Vector2.ZERO
 
+# Current input finger. For each finger touching the screen, the index increments by 1
+var _current_index = -1
+
+# Flag to control if we are within a valid event (finger index, inside the boundaries, etc)
+var _is_valid_event = false
+
 # FIXED: The joystick doesn't move.
 # DYNAMIC: Every time the joystick area is pressed, the joystick position is set on the touched position.
 # FOLLOWING: If the finger moves outside the joystick background, the joystick follows it.
@@ -41,26 +47,41 @@ onready var _handle := $Background/Handle
 onready var _original_color : Color = _handle.modulate
 onready var _original_position : Vector2 = _background.rect_position
 
-func _gui_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch and (joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING):
-		if event.is_pressed():
-			var new_pos = event.position - _background.rect_size / 2
+func _input(event: InputEvent) -> void:
+	_check_container_input(event)
+	_check_background_input(event)
+
+func _check_container_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and _is_valid_index(event.index) and \
+	(joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING):
+		if event.is_pressed() and _is_within_rect(event.position):
+			var new_pos = event.position - rect_position - _background.rect_size / 2
 			_background.rect_position = new_pos
+			_set_input_index(event.index)
+			_is_valid_event = true
 		else:
 			_background.rect_position = _original_position
+			_reset_input_index()
+			_is_valid_event = false
 
-func _on_Background_gui_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch:
-		if event.pressed:
+func _check_background_input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and _is_valid_index(event.index):
+		if event.pressed and _is_within_background_rect(event.position):
 			_handle.modulate = _pressed_color
-		else:
+			_is_valid_event = true
+			_set_input_index(event.index)
+		elif not event.pressed:
 			is_working = false
 			output = Vector2.ZERO
 			_set_handle_center_position(_background.rect_size / 2)
 			_handle.modulate = _original_color
+			_reset_input_index()
+			_is_valid_event = false
 	
-	if event is InputEventScreenDrag:
-		var vector : Vector2 = event.position - _background.rect_size / 2
+	if event is InputEventScreenDrag and _is_valid_index(event.index) and _is_valid_event:
+#		var event_position = event.position - _background.rect_global_position
+		var event_position = (event.position - _background.rect_global_position) / _background.rect_scale
+		var vector : Vector2 = event_position - _background.rect_size / 2
 		var dead_size = dead_zone * _background.rect_size.x / 2
 		if vector.length() < dead_size:
 			is_working = false
@@ -104,3 +125,40 @@ func _directional_vector(vector: Vector2, n_directions: int, simmetry_angle := P
 	angle *= PI / n_directions
 	angle -= simmetry_angle
 	return Vector2(cos(angle), sin(angle)) * vector.length()
+
+# Check whether the position is within the boundaries of the main rect
+func _is_within_rect(position: Vector2) -> bool:
+	var top_right = rect_position #rect_global_position
+	var bottom_right = rect_position + rect_size #rect_global_position
+
+	return _is_within_boundary(position, top_right, bottom_right)
+
+# Check whether the position is within the boundaries of the background rect
+func _is_within_background_rect(position: Vector2) -> bool:
+	var offset = (Vector2.ONE - _background.rect_scale) * (_background.rect_pivot_offset)
+	var size = _background.rect_size * _background.rect_scale
+
+	var top_right = _background.rect_global_position# + offset
+	var bottom_right = _background.rect_global_position + size
+
+	return _is_within_boundary(position, top_right, bottom_right)
+
+func _is_within_boundary(position: Vector2, top_right: Vector2, bottom_left: Vector2) -> bool:
+	# Improve to handle the circle instead a square
+	var is_within_x: bool = (top_right.x <= position.x and position.x <= bottom_left.x)
+	var is_within_y: bool = (top_right.y <= position.y and position.y <= bottom_left.y)
+
+	return is_within_x and is_within_y
+
+# Update the current finger index
+func _set_input_index(index: int):
+	_current_index = index
+
+# Clear the current finger index
+func _reset_input_index():
+	_current_index = -1
+
+# Check if the index is a valid for the operation
+# Either the current is not set -> first screen touch, or is the same finger as we are already handling
+func _is_valid_index(index: int) -> bool:
+	return _current_index == -1 or _current_index == index

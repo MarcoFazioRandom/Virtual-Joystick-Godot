@@ -42,4 +42,3 @@ rect_pivot_offset = Vector2( 50, 50 )
 texture = ExtResource( 3 )
 expand = true
 stretch_mode = 6
-[connection signal="gui_input" from="Background" to="." method="_on_Background_gui_input"]
