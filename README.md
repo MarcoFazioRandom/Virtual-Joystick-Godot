@@ -8,6 +8,15 @@ A simple virtual joystick for touchscreens, for both 2D and 3D games, with usefu
 
 Made with Godot Engine: https://godotengine.org
 
+
+
+#### Notice:
+I found an annoying bug with Godot's input system so for now I can't say this project is 100% done, when the bug will be fixed I'll clean the code and perfection the joystick.
+About the bug: 
+in the _gui_input() function the event InputEventScreenTouch is bugged when using the touch, because it only read the touch when is pressed but not when it's released. I will report this bug hoping it will be fixed soon.
+
+
+
 ### OPTIONS:  
 
 <img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_2.png" width="300">
