@@ -8,15 +8,6 @@ A simple virtual joystick for touchscreens, for both 2D and 3D games, with usefu
 
 Made with Godot Engine: https://godotengine.org
 
-
-
-#### Notice:
-I found an annoying bug with Godot's input system so for now I can't say this project is 100% done, when the bug will be fixed I'll clean the code and perfection the joystick.
-About the bug: 
-in the _gui_input() function the event InputEventScreenTouch is bugged when using the touch, because it only read the touch when is pressed but not when it's released. I will report this bug hoping it will be fixed soon.
-
-
-
 ### OPTIONS:  
 
 <img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_2.png" width="300">
@@ -37,11 +28,15 @@ in the _gui_input() function the event InputEventScreenTouch is bugged when usin
 
 - Clamp zone: The max distance the handle can reach, in proportion to the background size.
 
+- Visibility mode: 
+	- Always: Always visible.
+	- touchscreen only: Visible on touch screens only (will hide() if the device has not a touchscreen).
+
 ### HELP:  
 - The Control parent of the joystick is the area in which the joystick can move in Dynamic or Following mode.  
 - For moving the joystick inside is area, select it, right click and turn on "Editable Children" and simply move the 'Background' node.  - With "Editable Children" turned on you can also edit the joystick textures and colors.  
 - An example scene is provided in the "Test" folder.  
 - To be able to use the joystick with the mouse, you have to go to Project settings -> Input Devices -> Pointing, and turn on the option "emulate touch from mouse".  
 
-### HOW TO USE:  
+### ADVICE ON HOW TO USE:  
 Create a CanvasLayer node and name it "UI", it'll contain all the UI elements, then add the Joystick scene as a child of the UI node and move it where you prefer (remember to turn on "Editable Children"). 
