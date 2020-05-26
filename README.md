@@ -1,5 +1,5 @@
 # Godot-Virtual-Joystick
-A simple virtual joystick for touchscreens, for both 2D and 3D games, with useful options, It support multitouch.
+A simple virtual joystick for touchscreens, for both 2D and 3D games, with useful options, it support multitouch.
 
 <p align="center"> 
 	<img src="https://raw.githubusercontent.com/MarcoFazioRandom/Virtual-Joystick-Godot/master/preview_icon.png" width="300">
