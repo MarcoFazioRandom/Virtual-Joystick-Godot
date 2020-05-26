@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Joystick/Joystick.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Test/Arrow.png" type="Texture" id=2]
+[ext_resource path="res://Test/Player.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 33.5625, 23.1896 )
+
+[node name="Node" type="Node"]
+
+[node name="UI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoystickLeft" parent="UI" instance=ExtResource( 1 )]
+anchor_top = 15.0
+anchor_bottom = 15.0
+margin_top = -500.0
+margin_right = 500.0
+margin_bottom = -6.10352e-05
+
+[node name="JoystickRight" parent="UI" instance=ExtResource( 1 )]
+anchor_left = 25.0
+anchor_top = 15.0
+anchor_right = 25.0
+anchor_bottom = 15.0
+margin_left = -500.0
+margin_top = -500.0
+margin_right = 6.10352e-05
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="Node2D"]
+position = Vector2( 500, 200 )
+script = ExtResource( 3 )
+joystickLeftPath = NodePath("../../UI/JoystickLeft")
+joystickRightPath = NodePath("../../UI/JoystickRight")
+
+[node name="Sprite" type="Sprite" parent="Node2D/KinematicBody2D"]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/KinematicBody2D"]
+shape = SubResource( 1 )

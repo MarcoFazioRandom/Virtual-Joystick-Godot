@@ -4,15 +4,18 @@ class_name Player
 
 export var speed : float = 300
 
-onready var joystick_move := $UI/JoystickMove
-onready var joystick_look := $UI/JoystickLook
+export (NodePath) var joystickLeftPath
+onready var joystickLeft : Joystick = get_node(joystickLeftPath)
+
+export (NodePath) var joystickRightPath
+onready var joystickRight : Joystick = get_node(joystickRightPath)
 
 func _physics_process(delta: float) -> void:
 	_move(delta)
 
 func _move(delta: float) -> void:
-	if joystick_move and joystick_move.is_working:
-		move_and_slide(joystick_move.output * speed)
+	if joystickLeft and joystickLeft.is_working:
+		move_and_slide(joystickLeft.output * speed)
 	
-	if joystick_look and joystick_look.is_working:
-		rotation = joystick_look.output.angle()
+	if joystickRight and joystickRight.is_working:
+		rotation = joystickRight.output.angle()
