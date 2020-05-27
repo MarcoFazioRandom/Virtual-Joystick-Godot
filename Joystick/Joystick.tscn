@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Joystick/Joystick.gd" type="Script" id=1]
 [ext_resource path="res://Joystick/joystick_background_cross.png" type="Texture" id=2]
+[ext_resource path="res://Joystick/joystick_handle.png" type="Texture" id=3]
 
 [node name="Joystick" type="Control"]
 anchor_top = 1.0
@@ -38,15 +39,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -64.0
-margin_top = -64.0
-margin_right = 64.0
-margin_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_scale = Vector2( 0.5, 0.5 )
-rect_pivot_offset = Vector2( 128, 128 )
-texture = ExtResource( 2 )
+rect_pivot_offset = Vector2( 64, 64 )
+texture = ExtResource( 3 )
 stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false

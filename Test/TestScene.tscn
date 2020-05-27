@@ -45,3 +45,7 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/KinematicBody2D"]
 shape = SubResource( 1 )
+
+[editable path="UI/JoystickLeft"]
+
+[editable path="UI/JoystickRight"]
