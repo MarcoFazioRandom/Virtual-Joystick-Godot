@@ -35,7 +35,7 @@ export var simmetry_angle := 90
 export(float, 0, 0.5) var dead_zone := 0.2;
 
 #The max distance the handle can reach, in proportion to the background size.
-export(float, 0.5, 2) var clamp_zone := 1;
+export(float, 0.5, 2) var clamp_zone := 1.0;
 
 #VISIBILITY_ALWAYS = Always visible.
 #VISIBILITY_TOUCHSCREEN_ONLY = Visible on touch screens only.
