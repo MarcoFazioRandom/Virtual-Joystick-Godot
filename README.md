@@ -22,7 +22,7 @@ Made with Godot Engine: https://godotengine.org
 	- Normalized: return a normalized vector. 
 
 - Directions: The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.  
-- Simmetry Angle: the angle of simmetry of the directions.  
+- Symmetry Angle: The angle of symmetry of the directions.  
 
 - Dead zone: If the handle is inside this range, in proportion to the background size, the output is zero.
 
