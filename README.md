@@ -18,11 +18,11 @@ Made with Godot Engine: https://godotengine.org
 	- Following: If the finger moves outside the joystick background, the joystick follows it.  
 
 - Vector mode: 
-	- Real: return a vector with a lenght beetween 0 and 1; useful for implementing different velocity or acceleration.  
-	- Normalized: return a normalized vector. 
+	- Real: Returns a vector with a length between 0 and 1; useful for implementing variable velocity or acceleration.  
+	- Normalized: Returns a normalized vector. 
 
 - Directions: The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.  
-- Simmetry Angle: the angle of simmetry of the directions.  
+- Symmetry Angle: The angle of symmetry of the directions.  
 
 - Dead zone: If the handle is inside this range, in proportion to the background size, the output is zero.
 
