@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Test/Player.tscn" type="PackedScene" id=1]
+
+[node name="Test" type="Node"]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 512, 200 )
+controls_Mode = 1
+
+[editable path="Player"]

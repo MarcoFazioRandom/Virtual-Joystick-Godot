@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Test/Player.gd" type="Script" id=1]
+[ext_resource path="res://Test/Arrow.png" type="Texture" id=2]
+[ext_resource path="res://Joystick/Joystick.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 32.1814, 23.4241 )
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="JoystickMove" parent="UI" instance=ExtResource( 3 )]
+editor/display_folded = true
+margin_top = 90.0
+margin_bottom = 2.0
+
+[node name="Background" parent="UI/JoystickMove" index="0"]
+margin_left = -196.0
+margin_top = -56.0
+margin_right = 60.0
+margin_bottom = 200.0
+
+[node name="JoystickLook" parent="UI" instance=ExtResource( 3 )]
+editor/display_folded = true
+margin_left = 512.0
+margin_top = 90.0
+margin_right = 0.0
+margin_bottom = 2.0
+
+[node name="Background" parent="UI/JoystickLook" index="0"]
+margin_left = -56.0
+margin_top = -56.0
+margin_right = 200.0
+margin_bottom = 200.0
+
+[editable path="UI/JoystickMove"]
+
+[editable path="UI/JoystickLook"]
