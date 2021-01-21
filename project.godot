@@ -35,8 +35,6 @@ config/icon="res://icon.png"
 window/size/width=1000
 window/energy_saving/keep_screen_on=false
 window/handheld/orientation="sensor_landscape"
-window/stretch/mode="viewport"
-window/stretch/aspect="keep"
 
 [input_devices]
 

@@ -32,10 +32,10 @@ export(int, 0, 12) var directions := 0
 export var simmetry_angle := 90
 
 #If the handle is inside this range, in proportion to the background size, the output is zero.
-export(float, 0, 0.5) var dead_zone := 0.2;
+export(float, 0, 0.5) var dead_zone := 0.1
 
 #The max distance the handle can reach, in proportion to the background size.
-export(float, 0.5, 2) var clamp_zone := 1.0;
+export(float, 0.5, 2) var clamp_zone := 1.0
 
 #VISIBILITY_ALWAYS = Always visible.
 #VISIBILITY_TOUCHSCREEN_ONLY = Visible on touch screens only.
@@ -71,37 +71,13 @@ func _input(event: InputEvent) -> void:
 			if _is_inside_control_circle(event.position, _background):
 				_touch_index = event.index
 				_handle.self_modulate = _pressed_color
+				_update_joystick(event.position)
+			
 		elif _touch_ended(event):
 			_reset()
 	
 	elif event is InputEventScreenDrag and _touch_index == event.index:
-		var ray :float = _background.rect_size.x / 2
-		var dead_size := dead_zone * ray
-		var clamp_size := clamp_zone * ray
-		
-		var center :Vector2 = _background.rect_global_position + (_background.rect_size / 2)
-		var vector :Vector2 = event.position - center
-		
-		if vector.length() > dead_size:
-			if directions > 0:
-				vector = _directional_vector(vector, directions, deg2rad(simmetry_angle))
-			
-			if vector_mode == VectorMode.NORMALIZED:
-				output = vector.normalized()
-				_center_control(_handle, output * clamp_size + center)
-			elif vector_mode == VectorMode.REAL:
-				var clamped_vector := vector.clamped(clamp_size)
-				output = vector.normalized() * (clamped_vector.length() - dead_size) / (clamp_size - dead_size)
-				_center_control(_handle, clamped_vector + center)
-			
-			is_working = true
-			if joystick_mode == JoystickMode.FOLLOWING:
-				_following(vector)
-		else:
-			is_working = false
-			output = Vector2.ZERO
-			_reset_handle()
-			return
+		_update_joystick(event.position)
 
 func _center_control(control: Control, new_global_position: Vector2) -> void:
 	control.rect_global_position = new_global_position - (control.rect_size / 2)
@@ -129,7 +105,7 @@ func _is_inside_control_circle(global_position: Vector2, control: Control) -> bo
 	var ray_position := global_position - center
 	return ray_position.length_squared() < ray * ray
 
-func _following(vector: Vector2) -> void:
+func _following(vector: Vector2):
 	var clamp_size :float = clamp_zone * _background.rect_size.x / 2
 	if vector.length() > clamp_size:
 		var radius := vector.normalized() * clamp_size
@@ -139,12 +115,39 @@ func _following(vector: Vector2) -> void:
 		new_pos.y = clamp(new_pos.y, -_background.rect_size.y / 2, rect_size.y - _background.rect_size.y / 2)
 		_background.rect_position = new_pos
 
-# warning-ignore:shadowed_variable
-func _directional_vector(vector: Vector2, n_directions: int, simmetry_angle := PI/2) -> Vector2:
-	var angle := (vector.angle() + simmetry_angle) / (PI / n_directions)
+func _directional_vector(vector: Vector2, n_directions: int, _simmetry_angle := PI/2) -> Vector2:
+	var angle := (vector.angle() + _simmetry_angle) / (PI / n_directions)
 	angle = floor(angle) if angle >= 0 else ceil(angle)
 	if abs(angle) as int % 2 == 1:
 		angle = angle + 1 if angle >= 0 else angle - 1
 	angle *= PI / n_directions
-	angle -= simmetry_angle
+	angle -= _simmetry_angle
 	return Vector2(cos(angle), sin(angle)) * vector.length()
+
+func _update_joystick(event_position: Vector2):
+	var ray : float = _background.rect_size.x / 2
+	var dead_size := dead_zone * ray
+	var clamp_size := clamp_zone * ray
+	
+	var center : Vector2 = _background.rect_global_position + (_background.rect_size / 2)
+	var vector : Vector2 = event_position - center
+	
+	if vector.length() > dead_size:
+		if directions > 0:
+			vector = _directional_vector(vector, directions, deg2rad(simmetry_angle))
+		
+		if vector_mode == VectorMode.NORMALIZED:
+			output = vector.normalized()
+			_center_control(_handle, output * clamp_size + center)
+		elif vector_mode == VectorMode.REAL:
+			var clamped_vector := vector.clamped(clamp_size)
+			output = vector.normalized() * (clamped_vector.length() - dead_size) / (clamp_size - dead_size)
+			_center_control(_handle, clamped_vector + center)
+		
+		is_working = true
+		if joystick_mode == JoystickMode.FOLLOWING:
+			_following(vector)
+	else:
+		is_working = false
+		output = Vector2.ZERO
+		_reset_handle()
