@@ -8,6 +8,18 @@ var is_working := false
 # The joystick output.
 var output := Vector2.ZERO
 
+# JOYSTICK: To behave as a multiaxis joystick.
+# BUTTON: To behave as a press button.
+enum JoystickType {JOYSTICK, BUTTON}
+
+export(JoystickType) var joystick_type := JoystickType.JOYSTICK
+
+# ACTION_MODE_BUTTON_PRESS: Require just a press to consider the button clicked.
+# ACTION_MODE_BUTTON_RELEASE: Require a press and a subsequent release before considering the button clicked
+enum ButtonActionMode {ACTION_MODE_BUTTON_PRESS, ACTION_MODE_BUTTON_RELEASE}
+
+export(ButtonActionMode) var button_action_mode = ButtonActionMode.ACTION_MODE_BUTTON_PRESS 
+
 # FIXED: The joystick doesn't move.
 # DYNAMIC: Every time the joystick area is pressed, the joystick position is set on the touched position.
 # FOLLOWING: If the finger moves outside the joystick background, the joystick follows it.
@@ -27,9 +39,9 @@ export(Color) var _pressed_color := Color.gray
 # The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.
 export(int, 0, 12) var directions := 0
 
-# It changes the angle of simmetry of the directions.
+# It changes the angle of symmetry of the directions.
 #export(int, -180, 180) 
-export var simmetry_angle := 90
+export var symmetry_angle := 90
 
 #If the handle is inside this range, in proportion to the background size, the output is zero.
 export(float, 0, 0.5) var dead_zone := 0.1
@@ -49,6 +61,11 @@ onready var _original_color : Color = _handle.self_modulate
 onready var _original_position : Vector2 = _background.rect_position
 
 var _touch_index :int = -1
+
+# Signals for "BUTTON" behavior
+signal button_down
+signal button_up
+signal pressed
 
 func _ready() -> void:
 	if not OS.has_touchscreen_ui_hint() and visibility_mode == VisibilityMode.TOUCHSCREEN_ONLY:
@@ -71,13 +88,27 @@ func _input(event: InputEvent) -> void:
 			if _is_inside_control_circle(event.position, _background):
 				_touch_index = event.index
 				_handle.self_modulate = _pressed_color
-				_update_joystick(event.position)
+				match joystick_type:
+					JoystickType.JOYSTICK:
+						_update_joystick(event.position)
+					JoystickType.BUTTON:
+						output = event.position
+				emit_signal("button_down")
+				if button_action_mode == ButtonActionMode.ACTION_MODE_BUTTON_PRESS:
+					emit_signal("pressed")
 			
 		elif _touch_ended(event):
 			_reset()
+			emit_signal("button_up")
+			if button_action_mode == ButtonActionMode.ACTION_MODE_BUTTON_RELEASE:
+				emit_signal("pressed")
 	
 	elif event is InputEventScreenDrag and _touch_index == event.index:
-		_update_joystick(event.position)
+		match joystick_type:
+			JoystickType.JOYSTICK:
+				_update_joystick(event.position)
+			JoystickType.BUTTON:
+				pass
 
 func _center_control(control: Control, new_global_position: Vector2) -> void:
 	control.rect_global_position = new_global_position - (control.rect_size / 2)
@@ -115,13 +146,13 @@ func _following(vector: Vector2):
 		new_pos.y = clamp(new_pos.y, -_background.rect_size.y / 2, rect_size.y - _background.rect_size.y / 2)
 		_background.rect_position = new_pos
 
-func _directional_vector(vector: Vector2, n_directions: int, _simmetry_angle := PI/2) -> Vector2:
-	var angle := (vector.angle() + _simmetry_angle) / (PI / n_directions)
+func _directional_vector(vector: Vector2, n_directions: int, _symmetry_angle := PI/2) -> Vector2:
+	var angle := (vector.angle() + _symmetry_angle) / (PI / n_directions)
 	angle = floor(angle) if angle >= 0 else ceil(angle)
 	if abs(angle) as int % 2 == 1:
 		angle = angle + 1 if angle >= 0 else angle - 1
 	angle *= PI / n_directions
-	angle -= _simmetry_angle
+	angle -= _symmetry_angle
 	return Vector2(cos(angle), sin(angle)) * vector.length()
 
 func _update_joystick(event_position: Vector2):
@@ -134,7 +165,7 @@ func _update_joystick(event_position: Vector2):
 	
 	if vector.length() > dead_size:
 		if directions > 0:
-			vector = _directional_vector(vector, directions, deg2rad(simmetry_angle))
+			vector = _directional_vector(vector, directions, deg2rad(symmetry_angle))
 		
 		if vector_mode == VectorMode.NORMALIZED:
 			output = vector.normalized()
