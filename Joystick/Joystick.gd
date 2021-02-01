@@ -27,9 +27,9 @@ export(Color) var _pressed_color := Color.gray
 # The number of directions, e.g. a D-pad is joystick with 4 directions, keep 0 for a free joystick.
 export(int, 0, 12) var directions := 0
 
-# It changes the angle of simmetry of the directions.
+# It changes the angle of symmetry of the directions.
 #export(int, -180, 180) 
-export var simmetry_angle := 90
+export var symmetry_angle := 90
 
 #If the handle is inside this range, in proportion to the background size, the output is zero.
 export(float, 0, 0.5) var dead_zone := 0.1
@@ -115,13 +115,13 @@ func _following(vector: Vector2):
 		new_pos.y = clamp(new_pos.y, -_background.rect_size.y / 2, rect_size.y - _background.rect_size.y / 2)
 		_background.rect_position = new_pos
 
-func _directional_vector(vector: Vector2, n_directions: int, _simmetry_angle := PI/2) -> Vector2:
-	var angle := (vector.angle() + _simmetry_angle) / (PI / n_directions)
+func _directional_vector(vector: Vector2, n_directions: int, _symmetry_angle := PI/2) -> Vector2:
+	var angle := (vector.angle() + _symmetry_angle) / (PI / n_directions)
 	angle = floor(angle) if angle >= 0 else ceil(angle)
 	if abs(angle) as int % 2 == 1:
 		angle = angle + 1 if angle >= 0 else angle - 1
 	angle *= PI / n_directions
-	angle -= _simmetry_angle
+	angle -= _symmetry_angle
 	return Vector2(cos(angle), sin(angle)) * vector.length()
 
 func _update_joystick(event_position: Vector2):
@@ -134,7 +134,7 @@ func _update_joystick(event_position: Vector2):
 	
 	if vector.length() > dead_size:
 		if directions > 0:
-			vector = _directional_vector(vector, directions, deg2rad(simmetry_angle))
+			vector = _directional_vector(vector, directions, deg2rad(symmetry_angle))
 		
 		if vector_mode == VectorMode.NORMALIZED:
 			output = vector.normalized()
