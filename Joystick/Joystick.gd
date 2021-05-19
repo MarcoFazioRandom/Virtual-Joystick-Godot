@@ -43,6 +43,12 @@ enum VisibilityMode {ALWAYS , TOUCHSCREEN_ONLY }
 
 export(VisibilityMode) var visibility_mode := VisibilityMode.ALWAYS
 
+# Enable virtual input actions presses
+# Useful to be able to use the same input actions from a controller joystick and from this virtual joystick
+export var use_input_actions = false
+# Use action labels from the Project Settings > Input Map
+export(Array, String) var input_actions = ["virtual_joystick_up","virtual_joystick_right","virtual_joystick_down","virtual_joystick_left"]
+
 onready var _background := $Background
 onready var _handle := $Background/Handle
 onready var _original_color : Color = _handle.self_modulate
@@ -93,6 +99,10 @@ func _reset():
 	_handle.self_modulate = _original_color
 	_background.rect_position = _original_position
 	_reset_handle()
+	
+	if use_input_actions:
+		for input_action in input_actions:
+			Input.action_release(input_action)
 
 func _is_inside_control_rect(global_position: Vector2, control: Control) -> bool:
 	var x: bool = global_position.x > control.rect_global_position.x and global_position.x < control.rect_global_position.x + (control.rect_size.x * control.rect_scale.x)
@@ -147,6 +157,16 @@ func _update_joystick(event_position: Vector2):
 		is_working = true
 		if joystick_mode == JoystickMode.FOLLOWING:
 			_following(vector)
+			
+		if use_input_actions:
+			var strengths = [
+				max(0, -output.y),
+				max(0, output.x),
+				max(0, output.y),
+				max(0, -output.x)
+			]
+			for i in range(4):
+				Input.action_press(input_actions[i], strengths[i])
 	else:
 		is_working = false
 		output = Vector2.ZERO
