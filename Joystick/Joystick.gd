@@ -46,7 +46,6 @@ export(VisibilityMode) var visibility_mode := VisibilityMode.ALWAYS
 onready var _background := $Background
 onready var _handle := $Background/Handle
 onready var _original_color : Color = _handle.self_modulate
-onready var _original_position : Vector2 = _background.rect_position
 
 var _touch_index :int = -1
 
@@ -60,12 +59,13 @@ func _touch_started(event: InputEventScreenTouch) -> bool:
 func _touch_ended(event: InputEventScreenTouch) -> bool:
 	return not event.pressed and _touch_index == event.index
 
-func _input(event: InputEvent) -> void:
+func _gui_input(event: InputEvent) -> void:
 	if not (event is InputEventScreenTouch or event is InputEventScreenDrag):
 		return
 	
 	if event is InputEventScreenTouch:
-		if _touch_started(event) and _is_inside_control_rect(event.position, self):
+		event.position += rect_global_position
+		if _touch_started(event):
 			if (joystick_mode == JoystickMode.DYNAMIC or joystick_mode == JoystickMode.FOLLOWING):
 				_center_control(_background, event.position)
 			if _is_inside_control_circle(event.position, _background):
@@ -77,6 +77,7 @@ func _input(event: InputEvent) -> void:
 			_reset()
 	
 	elif event is InputEventScreenDrag and _touch_index == event.index:
+		event.position += rect_global_position
 		_update_joystick(event.position)
 
 func _center_control(control: Control, new_global_position: Vector2) -> void:
@@ -91,13 +92,8 @@ func _reset():
 	is_working = false
 	output = Vector2.ZERO
 	_handle.self_modulate = _original_color
-	_background.rect_position = _original_position
+	_background.rect_position = (rect_size / 2) - (_background.rect_size / 2)
 	_reset_handle()
-
-func _is_inside_control_rect(global_position: Vector2, control: Control) -> bool:
-	var x: bool = global_position.x > control.rect_global_position.x and global_position.x < control.rect_global_position.x + (control.rect_size.x * control.rect_scale.x)
-	var y: bool = global_position.y > control.rect_global_position.y and global_position.y < control.rect_global_position.y + (control.rect_size.y * control.rect_scale.y)
-	return x and y
 
 func _is_inside_control_circle(global_position: Vector2, control: Control) -> bool:
 	var ray := control.rect_size.x * control.rect_scale.x / 2
