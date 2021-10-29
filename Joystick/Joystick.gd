@@ -80,11 +80,12 @@ func _input(event: InputEvent) -> void:
 		_update_joystick(event.position)
 
 func _center_control(control: Control, new_global_position: Vector2) -> void:
-	control.rect_global_position = new_global_position - (control.rect_size / 2)
+	control.rect_global_position = new_global_position - (rect_scale * control.rect_size / 2)
 	#control.rect_global_position = new_global_position - control.rect_pivot_offset
 
 func _reset_handle():
-	_center_control(_handle, _background.rect_global_position + (_background.rect_size / 2))
+	var pos = _background.rect_global_position + (rect_scale * _background.rect_size / 2)
+	_center_control(_handle, pos)
 
 func _reset():
 	_touch_index = -1
@@ -100,13 +101,13 @@ func _is_inside_control_rect(global_position: Vector2, control: Control) -> bool
 	return x and y
 
 func _is_inside_control_circle(global_position: Vector2, control: Control) -> bool:
-	var ray := control.rect_size.x * control.rect_scale.x / 2
+	var ray := rect_scale.x * control.rect_size.x * control.rect_scale.x / 2
 	var center := control.rect_global_position + Vector2(ray, ray)
 	var ray_position := global_position - center
 	return ray_position.length_squared() < ray * ray
 
 func _following(vector: Vector2):
-	var clamp_size :float = clamp_zone * _background.rect_size.x / 2
+	var clamp_size :float = rect_scale.x * clamp_zone * _background.rect_size.x / 2
 	if vector.length() > clamp_size:
 		var radius := vector.normalized() * clamp_size
 		var delta := vector - radius
@@ -125,11 +126,11 @@ func _directional_vector(vector: Vector2, n_directions: int, _symmetry_angle := 
 	return Vector2(cos(angle), sin(angle)) * vector.length()
 
 func _update_joystick(event_position: Vector2):
-	var ray : float = _background.rect_size.x / 2
+	var ray : float = rect_scale.x * _background.rect_size.x / 2
 	var dead_size := dead_zone * ray
 	var clamp_size := clamp_zone * ray
 	
-	var center : Vector2 = _background.rect_global_position + (_background.rect_size / 2)
+	var center : Vector2 = _background.rect_global_position + (rect_scale * _background.rect_size / 2)
 	var vector : Vector2 = event_position - center
 	
 	if vector.length() > dead_size:

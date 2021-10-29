@@ -22,6 +22,7 @@ anchor_bottom = 15.0
 margin_top = -500.0
 margin_right = 500.0
 margin_bottom = -6.10352e-05
+rect_scale = Vector2( 1.25, 1.25 )
 
 [node name="JoystickRight" parent="UI" instance=ExtResource( 1 )]
 anchor_left = 25.0
@@ -31,6 +32,7 @@ anchor_bottom = 15.0
 margin_left = -500.0
 margin_top = -500.0
 margin_right = 6.10352e-05
+rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="Node2D" type="Node2D" parent="."]
 
@@ -47,5 +49,4 @@ texture = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [editable path="UI/JoystickLeft"]
-
 [editable path="UI/JoystickRight"]
