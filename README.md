@@ -24,7 +24,7 @@ Easy to use:
 	- Fixed: The joystick doesn't move. 
 	- Dynamic: Every time the joystick area is pressed, the joystick position is set on the touched position. 
 
-- Dead zone size: If the tip is inside this range, in proportion to the background size, the output is zero.
+- Dead zone size: If the tip is inside this range the output is zero.
 
 - Clamp zone size: The max distance the tip can reach.
 
