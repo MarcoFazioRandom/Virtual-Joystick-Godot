@@ -79,6 +79,10 @@ func _gui_input(event):
 		elif not event.pressed and _touch_index == event.index:
 			accept_event()
 			_reset()
+	elif event is InputEventMouseButton and not event.is_pressed():
+		accept_event()
+		_reset()
+
 	if event is InputEventScreenDrag and _touch_index == event.index:
 		accept_event()
 		_update_joystick(event.position)
