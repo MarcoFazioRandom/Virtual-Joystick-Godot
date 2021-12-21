@@ -9,7 +9,7 @@ export (NodePath) var joystickRightPath
 onready var joystickRight : VirtualJoystick = get_node(joystickRightPath)
 
 func _process(delta: float) -> void:
-	# Movement using the joystick output:
+#	# Movement using the joystick output:
 #	if joystickLeft and joystickLeft.is_pressed():
 #		position += joystickLeft.get_output() * speed * delta
 	
