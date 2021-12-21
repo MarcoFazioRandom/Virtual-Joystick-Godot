@@ -96,14 +96,14 @@ func _move_tip(new_position: Vector2) -> void:
 	_tip.rect_global_position = new_position - _tip.rect_pivot_offset * _base.get_global_transform_with_canvas().get_scale()
 
 func _is_point_inside_joystick_area(point: Vector2) -> bool:
-	var x: bool = point.x > rect_global_position.x and point.x < rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
-	var y: bool = point.y > rect_global_position.y and point.y < rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)
+	var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
+	var y: bool = point.y >= rect_global_position.y and point.y <= rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)
 	return x and y
 
 func _is_point_inside_base(point: Vector2) -> bool:
 	var center : Vector2 = _base.rect_global_position + _base_radius
 	var vector : Vector2 = point - center
-	if vector.length_squared() < _base_radius.x * _base_radius.x:
+	if vector.length_squared() <= _base_radius.x * _base_radius.x:
 		return true
 	else:
 		return false
@@ -115,7 +115,7 @@ func _update_joystick(touch_position: Vector2) -> void:
 	
 	_move_tip(center + vector)
 	
-	if vector.length_squared() >= deadzone_size * deadzone_size:
+	if vector.length_squared() > deadzone_size * deadzone_size:
 		_pressed = true
 		_output = (vector - (vector.normalized() * deadzone_size)) / (clampzone_size - deadzone_size)
 	else:
