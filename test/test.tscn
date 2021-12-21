@@ -13,8 +13,8 @@
 [node name="Virtual joystick2" parent="UI" instance=ExtResource( 2 )]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -200.0
-margin_right = 0.0
+margin_left = -250.0
+margin_right = -50.0
 joystick_mode = 1
 use_input_actions = false
 

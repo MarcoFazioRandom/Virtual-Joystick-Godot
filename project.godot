@@ -24,9 +24,16 @@ config/name="Virtual Joystick"
 run/main_scene="res://test/test.tscn"
 config/icon="res://icon.png"
 
+[display]
+
+window/handheld/orientation="sensor_landscape"
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
 [input_devices]
 
 pointing/emulate_touch_from_mouse=true
+pointing/emulate_mouse_from_touch=false
 
 [physics]
 

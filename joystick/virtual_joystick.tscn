@@ -8,29 +8,20 @@
 modulate = Color( 1, 1, 1, 0.509804 )
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -200.0
-margin_right = 200.0
+margin_left = 50.0
+margin_top = -250.0
+margin_right = 250.0
+margin_bottom = -50.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Base" type="CenterContainer" parent="."]
+[node name="Base" type="TextureRect" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-size_flags_horizontal = 4
-size_flags_vertical = 4
-use_top_left = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="Base"]
 margin_left = -100.0
 margin_top = -100.0
 margin_right = 100.0
@@ -46,15 +37,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tip" type="CenterContainer" parent="Base"]
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-size_flags_horizontal = 4
-size_flags_vertical = 4
-use_top_left = true
-
-[node name="TextureRect" type="TextureRect" parent="Base/Tip"]
+[node name="Tip" type="TextureRect" parent="Base"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 margin_left = -50.0
 margin_top = -50.0
 margin_right = 50.0
