@@ -74,18 +74,20 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			if _is_point_inside_joystick_area(event.position) and _touch_index == -1:
-				if joystick_mode == JoystickMode.DYNAMIC:
-					_move_base(event.position)
 				if joystick_mode == JoystickMode.DYNAMIC or (joystick_mode == JoystickMode.FIXED and _is_point_inside_base(event.position)):
+					if joystick_mode == JoystickMode.DYNAMIC:
+						_move_base(event.position)
 					_touch_index = event.index
 					_tip.modulate = pressed_color
 					_update_joystick(event.position)
-		else:
-			if event.index == _touch_index:
-				_reset()
+					get_tree().set_input_as_handled()
+		elif event.index == _touch_index:
+			_reset()
+			get_tree().set_input_as_handled()
 	elif event is InputEventScreenDrag:
 		if event.index == _touch_index:
 			_update_joystick(event.position)
+			get_tree().set_input_as_handled()
 
 func _move_base(new_position: Vector2) -> void:
 	_base.rect_global_position = new_position - _base.rect_pivot_offset * get_global_transform_with_canvas().get_scale()
