@@ -1,6 +1,6 @@
 # Godot Virtual Joystick
 
-<img src="previews/icon.png" width="300">
+<img src="previews/icon.png" width="200">
 
 A simple virtual joystick for touchscreens, with useful options.
 
@@ -10,10 +10,10 @@ Godot Engine: https://godotengine.org
 
 ### PREVIEWS:
 
-<img src="previews/preview1.png" width="500">
+<img src="previews/preview1.png" width="400">
 
 Easy to setup:  
-<img src="previews/preview2.png" width="300">
+<img src="previews/preview2.png" width="200">
 
 Easy to use:  
 <img src="previews/preview3.png" width="500">
@@ -38,7 +38,7 @@ Easy to use:
 - The Control parent of the joystick is the area in which the joystick can move in Dynamic mode.  
 - For moving the joystick inside his area, select it, right click, turn on "Editable Children" and then change the position of the Base node.  
 - With "Editable Children" turned on you can also edit the joystick textures and colors.  
-- To be able to use the joystick with the mouse, you have to go to Project settings -> Input Devices -> Pointing, and turn on the option "emulate touch from mouse".
-- If you want multitouch, make sure to disable the option "emulate mouse from touch".
+- To be able to use the joystick with the mouse, you have to go to Project -> Project Settings -> General -> Input Devices, and turn ON the option "emulate touch from mouse".
+- If you want multitouch, make sure the option "emulate mouse from touch" is OFF.
 - Create a CanvasLayer node and name it "UI", it'll contain all the UI elements, then add the Joystick scene as a child of the UI node and move it where you prefer.  
 - An example scene is provided in the "Test" folder.  
