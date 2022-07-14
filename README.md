@@ -40,5 +40,6 @@ Easy to use:
 - With "Editable Children" turned on you can also edit the joystick textures and colors.  
 - To be able to use the joystick with the mouse, you have to go to Project -> Project Settings -> General -> Input Devices, and turn ON the option "emulate touch from mouse".
 - If you want multitouch, make sure the option "emulate mouse from touch" is OFF.
+- **To use multitouch and mouse, I advise you to turn ON "emulate touch from mouse" and turn OFF "emulate mouse from touch".**
 - Create a CanvasLayer node and name it "UI", it'll contain all the UI elements, then add the Joystick scene as a child of the UI node and move it where you prefer.  
 - An example scene is provided in the "Test" folder.  
