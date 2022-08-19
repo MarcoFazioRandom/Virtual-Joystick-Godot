@@ -111,7 +111,7 @@ func _is_point_inside_base(point: Vector2) -> bool:
 func _update_joystick(touch_position: Vector2) -> void:
 	var center : Vector2 = _base.rect_global_position + _base_radius
 	var vector : Vector2 = touch_position - center
-	vector = vector.clamped(clampzone_size)
+	vector = vector.limit_length(clampzone_size)
 	
 	_move_tip(center + vector)
 	
