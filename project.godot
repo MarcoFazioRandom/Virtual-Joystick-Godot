@@ -6,26 +6,19 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Control",
-"class": "VirtualJoystick",
-"language": "GDScript",
-"path": "res://joystick/virtual_joystick.gd"
-} ]
-_global_script_class_icons={
-"VirtualJoystick": ""
-}
+config_version=5
 
 [application]
 
 config/name="Virtual Joystick"
 run/main_scene="res://test/test.tscn"
-config/icon="res://icon.png"
+config/features=PackedStringArray("4.0")
+config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=1024
+window/size/viewport_height=600
 window/handheld/orientation="sensor_landscape"
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
