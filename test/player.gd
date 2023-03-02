@@ -1,12 +1,12 @@
-extends Sprite
+extends Sprite2D
 
-export (NodePath) var joystickLeftPath
-onready var joystickLeft : VirtualJoystick = get_node(joystickLeftPath)
+@export var joystickLeftPath:NodePath
+@onready var joystickLeft : VirtualJoystick = get_node(joystickLeftPath)
 
-export var speed : float = 100
+@export var speed : float = 100
 
-export (NodePath) var joystickRightPath
-onready var joystickRight : VirtualJoystick = get_node(joystickRightPath)
+@export  var joystickRightPath:NodePath
+@onready var joystickRight : VirtualJoystick = get_node(joystickRightPath)
 
 func _process(delta: float) -> void:
 #	# Movement using the joystick output:
