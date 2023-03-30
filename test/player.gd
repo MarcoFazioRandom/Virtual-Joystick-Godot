@@ -1,12 +1,12 @@
-extends Sprite
+extends Sprite2D
 
-export (NodePath) var joystickLeftPath
-onready var joystickLeft : VirtualJoystick = get_node(joystickLeftPath)
+@export var speed : float = 100
 
-export var speed : float = 100
+@export var joystick_left : VirtualJoystick
 
-export (NodePath) var joystickRightPath
-onready var joystickRight : VirtualJoystick = get_node(joystickRightPath)
+@export var joystick_right : VirtualJoystick
+
+var move_vector := Vector2.ZERO
 
 func _process(delta: float) -> void:
 #	# Movement using the joystick output:
@@ -14,11 +14,11 @@ func _process(delta: float) -> void:
 #		position += joystickLeft.get_output() * speed * delta
 	
 	# Movement using Input functions:
-	var move := Vector2.ZERO
-	move.x = Input.get_axis("ui_left", "ui_right")
-	move.y = Input.get_axis("ui_up", "ui_down")
-	position += move * speed * delta
+	move_vector = Vector2.ZERO
+	move_vector.x = Input.get_axis("ui_left", "ui_right")
+	move_vector.y = Input.get_axis("ui_up", "ui_down")
+	position += move_vector * speed * delta
 	
 	# Rotation:
-	if joystickRight and joystickRight.is_pressed():
-		rotation = joystickRight.get_output().angle()
+	if joystick_right and joystick_right.pressed:
+		rotation = joystick_right.output.angle()
