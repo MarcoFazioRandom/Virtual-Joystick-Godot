@@ -2,49 +2,53 @@ class_name VirtualJoystick
 
 extends Control
 
-# https://github.com/MarcoFazioRandom/Virtual-Joystick-Godot
+## A simple virtual joystick for touchscreens, with useful options.
+## Github: https://github.com/MarcoFazioRandom/Virtual-Joystick-Godot
 
-#### EXPORTED VARIABLE ####
+# EXPORTED VARIABLE
 
-# The color of the button when the joystick is in use.
+## The color of the button when the joystick is pressed.
 @export var pressed_color := Color.GRAY
 
-# If the input is inside this range, the output is zero.
+## If the input is inside this range, the output is zero.
 @export_range(0, 200, 1) var deadzone_size : float = 10
 
-# The max distance the tip can reach.
+## The max distance the tip can reach.
 @export_range(0, 500, 1) var clampzone_size : float = 75
 
-# FIXED: The joystick doesn't move.
-# DYNAMIC: Every time the joystick area is pressed, the joystick position is set on the touched position.
-enum Joystick_mode {FIXED, DYNAMIC}
+enum Joystick_mode {
+	FIXED, ## The joystick doesn't move.
+	DYNAMIC ## Every time the joystick area is pressed, the joystick position is set on the touched position.
+}
 
+## If the joystick stays in the same position or appears on the touched position when touch is started
 @export var joystick_mode := Joystick_mode.FIXED
 
-# VISIBILITY_ALWAYS = Always visible.
-# VISIBILITY_TOUCHSCREEN_ONLY = Visible on touch screens only.
-enum Visibility_mode {ALWAYS , TOUCHSCREEN_ONLY }
+enum Visibility_mode {
+	ALWAYS, ## Always visible
+	TOUCHSCREEN_ONLY ## Visible on touch screens only
+}
 
+## If the joystick is always visible, or is shown only if there is a touchscreen
 @export var visibility_mode := Visibility_mode.ALWAYS
 
-# Use Input Actions
+## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map)
 @export var use_input_actions := true
 
-# Project -> Project Settings -> Input Map
 @export var action_left := "ui_left"
 @export var action_right := "ui_right"
 @export var action_up := "ui_up"
 @export var action_down := "ui_down"
 
-#### PUBLIC VARIABLES ####
+# PUBLIC VARIABLES
 
-# If the joystick is receiving inputs.
-var pressed := false
+## If the joystick is receiving inputs.
+var is_pressed := false
 
 # The joystick output.
 var output := Vector2.ZERO
 
-#### PRIVATE VARIABLES ####
+# PRIVATE VARIABLES
 
 var _touch_index : int = -1
 
@@ -58,7 +62,7 @@ var _touch_index : int = -1
 
 @onready var _default_color : Color = _tip.modulate
 
-#### FUNCTIONS ####
+# FUNCTIONS
 
 func _ready() -> void:
 	if not DisplayServer.is_touchscreen_available() and visibility_mode == Visibility_mode.TOUCHSCREEN_ONLY:
@@ -110,10 +114,10 @@ func _update_joystick(touch_position: Vector2) -> void:
 	_move_tip(center + vector)
 	
 	if vector.length_squared() > deadzone_size * deadzone_size:
-		pressed = true
+		is_pressed = true
 		output = (vector - (vector.normalized() * deadzone_size)) / (clampzone_size - deadzone_size)
 	else:
-		pressed = false
+		is_pressed = false
 		output = Vector2.ZERO
 	
 	if use_input_actions:
@@ -138,7 +142,7 @@ func _update_input_actions():
 		Input.action_release(action_down)
 
 func _reset():
-	pressed = false
+	is_pressed = false
 	output = Vector2.ZERO
 	_touch_index = -1
 	_tip.modulate = _default_color
