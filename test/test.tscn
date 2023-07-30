@@ -22,7 +22,9 @@ grow_horizontal = 0
 joystick_mode = 1
 use_input_actions = false
 
-[node name="Player" type="Sprite2D" parent="."]
+[node name="Player" type="Sprite2D" parent="." node_paths=PackedStringArray("joystick_left", "joystick_right")]
 position = Vector2(600, 300)
 texture = ExtResource("2_44wa8")
 script = ExtResource("3_dsmxw")
+joystick_left = NodePath("../UI/Virtual joystick left")
+joystick_right = NodePath("../UI/Virtual joystick right")

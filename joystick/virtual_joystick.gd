@@ -121,25 +121,21 @@ func _update_joystick(touch_position: Vector2) -> void:
 		output = Vector2.ZERO
 	
 	if use_input_actions:
-		_update_input_actions()
+		if output.x > 0:
+			_update_input_action(action_right, output.x)
+		else:
+			_update_input_action(action_left, -output.x)
 
-func _update_input_actions():
-	if output.x < 0:
-		Input.action_press(action_left, -output.x)
-	elif Input.is_action_pressed(action_left):
-		Input.action_release(action_left)
-	if output.x > 0:
-		Input.action_press(action_right, output.x)
-	elif Input.is_action_pressed(action_right):
-		Input.action_release(action_right)
-	if output.y < 0:
-		Input.action_press(action_up, -output.y)
-	elif Input.is_action_pressed(action_up):
-		Input.action_release(action_up)
-	if output.y > 0:
-		Input.action_press(action_down, output.y)
-	elif Input.is_action_pressed(action_down):
-		Input.action_release(action_down)
+		if output.y > 0:
+			_update_input_action(action_down, output.y)
+		else:
+			_update_input_action(action_up, -output.y)
+
+func _update_input_action(action:String, value:float):
+	if value > InputMap.action_get_deadzone(action):
+		Input.action_press(action, value)
+	elif Input.is_action_pressed(action):
+		Input.action_release(action)
 
 func _reset():
 	is_pressed = false
@@ -149,11 +145,6 @@ func _reset():
 	_base.position = _base_default_position
 	_tip.position = _tip_default_position
 	if use_input_actions:
-		if Input.is_action_pressed(action_left) or Input.is_action_just_pressed(action_left):
-			Input.action_release(action_left)
-		if Input.is_action_pressed(action_right) or Input.is_action_just_pressed(action_right):
-			Input.action_release(action_right)
-		if Input.is_action_pressed(action_down) or Input.is_action_just_pressed(action_down):
-			Input.action_release(action_down)
-		if Input.is_action_pressed(action_up) or Input.is_action_just_pressed(action_up):
-			Input.action_release(action_up)
+		for action in [action_left, action_right, action_down, action_up]:
+			if Input.is_action_pressed(action) or Input.is_action_just_pressed(action):
+				Input.action_release(action)
