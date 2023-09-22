@@ -10,8 +10,8 @@ var move_vector := Vector2.ZERO
 
 func _process(delta: float) -> void:
 #	# Movement using the joystick output:
-#	if joystickLeft and joystickLeft.is_pressed:
-#		position += joystickLeft.output * speed * delta
+#	if joystick_left and joystick_left.is_pressed:
+#		position += joystick_left.output * speed * delta
 	
 	# Movement using Input functions:
 	move_vector = Vector2.ZERO
