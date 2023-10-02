@@ -16,9 +16,13 @@ extends Control
 ## The max distance the tip can reach.
 @export_range(0, 500, 1) var clampzone_size : float = 75
 
+## The distance before joystick follows thumb (Joystick mode: Follow)
+@export_range(100, 200, 10) var follow_threshold : float = 100
+
 enum Joystick_mode {
 	FIXED, ## The joystick doesn't move.
-	DYNAMIC ## Every time the joystick area is pressed, the joystick position is set on the touched position.
+	DYNAMIC, ## Every time the joystick area is pressed, the joystick position is set on the touched position.
+	FOLLOW, ## The joystick follows the thumb if it leaves the area
 }
 
 ## If the joystick stays in the same position or appears on the touched position when touch is started
@@ -72,8 +76,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			if _is_point_inside_joystick_area(event.position) and _touch_index == -1:
-				if joystick_mode == Joystick_mode.DYNAMIC or (joystick_mode == Joystick_mode.FIXED and _is_point_inside_base(event.position)):
-					if joystick_mode == Joystick_mode.DYNAMIC:
+				if joystick_mode == Joystick_mode.DYNAMIC or (joystick_mode == Joystick_mode.FIXED and _is_point_inside_base(event.position)) or joystick_mode == Joystick_mode.FOLLOW:
+					if joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOW:
 						_move_base(event.position)
 					_touch_index = event.index
 					_tip.modulate = pressed_color
@@ -110,7 +114,8 @@ func _update_joystick(touch_position: Vector2) -> void:
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = touch_position - center
 	vector = vector.limit_length(clampzone_size)
-	
+	if joystick_mode == Joystick_mode.FOLLOW and touch_position.distance_to(center) > follow_threshold:
+		_move_base(center.lerp(center + vector, 0.1))
 	_move_tip(center + vector)
 	
 	if vector.length_squared() > deadzone_size * deadzone_size:
