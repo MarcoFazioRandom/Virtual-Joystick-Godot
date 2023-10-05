@@ -35,6 +35,9 @@ enum Visibility_mode {
 ## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map)
 @export var use_input_actions := true
 
+## If true, tip rotates "looking away" from _base center
+@export var rotate_tip := true
+
 @export var action_left := "ui_left"
 @export var action_right := "ui_right"
 @export var action_up := "ui_up"
@@ -91,6 +94,8 @@ func _move_base(new_position: Vector2) -> void:
 	_base.global_position = new_position - _base.pivot_offset * get_global_transform_with_canvas().get_scale()
 
 func _move_tip(new_position: Vector2) -> void:
+	if rotate_tip:
+		_tip.set_rotation_degrees(rad_to_deg(atan2(50 - _tip.position.y, 50 - _tip.position.x))-90)
 	_tip.global_position = new_position - _tip.pivot_offset * _base.get_global_transform_with_canvas().get_scale()
 
 func _is_point_inside_joystick_area(point: Vector2) -> bool:

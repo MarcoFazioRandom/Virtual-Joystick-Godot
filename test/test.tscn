@@ -9,6 +9,7 @@
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Virtual joystick left" parent="UI" instance=ExtResource("1_4k4lh")]
+rotate_tip = false
 
 [node name="Virtual joystick right" parent="UI" instance=ExtResource("1_4k4lh")]
 anchors_preset = 3
