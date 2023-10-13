@@ -62,26 +62,25 @@ func _process(delta: float) -> void:
 - The Control parent of the joystick is the area in which the joystick can move in Dynamic mode.
 - For moving the joystick inside his area, select it, right click, turn on "Editable Children" and then change the position of the Base node.
 - With "Editable Children" turned on you can also edit the joystick textures and colors.
-- **To be able able to use multitouch and mouse, I advise you got to Project -> Project Settings -> General -> Input Devices to and turn ON "emulate touch from mouse" and turn OFF "emulate mouse from touch".**
 - Create a CanvasLayer node and name it "UI", it'll contain all the UI elements, then add the Joystick scene as a child of the UI node and move it where you prefer.
 - An example scene is provided in the "Test" folder.
 
 ## FAQ
 ### Multitouch doesn't work / can't use two joystick at the same time:
-In Godot, the input events from the mouse don't support multitouch, so make sure to have this configuration:
-Project -> Project Settings -> General -> Input Devices
-emulate touch from mouse ON
-emulate mouse from touch OFF
+In Godot, the input events from the mouse don't support multitouch, so make sure to have this configuration:  
+Project -> Project Settings -> General -> Input Devices  
+"emulate touch from mouse" ON  
+"emulate mouse from touch" OFF  
 
 ### The joystick doesn't work when using Input.get_vector():
 Unfortunately, this a bug in the Godot engine, so the only solution for now is using Input.get_axis:  
 This doesn't work:
 ```gdscript
-move := Input.get_vector("ui_left","ui_right","ui_up","ui_down")
+input_vector := Input.get_vector("ui_left","ui_right","ui_up","ui_down")
 ```  
 This works:
 ```gdscript
-move_vector := Vector2.ZERO
-move.x = Input.get_axis("ui_left", "ui_right")
-move.y = Input.get_axis("ui_up", "ui_down")
+input_vector := Vector2.ZERO
+input_vector.x = Input.get_axis("ui_left", "ui_right")
+input_vector.y = Input.get_axis("ui_up", "ui_down")
 ```
