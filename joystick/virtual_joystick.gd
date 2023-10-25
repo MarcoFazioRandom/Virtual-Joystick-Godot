@@ -69,6 +69,7 @@ func _ready() -> void:
 		hide()
 
 func _input(event: InputEvent) -> void:
+	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			if _is_point_inside_joystick_area(event.position) and _touch_index == -1:
