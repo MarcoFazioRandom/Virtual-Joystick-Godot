@@ -69,7 +69,6 @@ func _ready() -> void:
 		hide()
 
 func _input(event: InputEvent) -> void:
-	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
 	if event is InputEventScreenTouch:
 		if event.pressed:
 			if _is_point_inside_joystick_area(event.position) and _touch_index == -1:
@@ -100,6 +99,7 @@ func _is_point_inside_joystick_area(point: Vector2) -> bool:
 	return x and y
 
 func _is_point_inside_base(point: Vector2) -> bool:
+	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = point - center
 	if vector.length_squared() <= _base_radius.x * _base_radius.x:
@@ -108,6 +108,7 @@ func _is_point_inside_base(point: Vector2) -> bool:
 		return false
 
 func _update_joystick(touch_position: Vector2) -> void:
+	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = touch_position - center
 	vector = vector.limit_length(clampzone_size)
