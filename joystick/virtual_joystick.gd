@@ -55,8 +55,6 @@ var _touch_index : int = -1
 @onready var _base := $Base
 @onready var _tip := $Base/Tip
 
-@onready var _base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
-
 @onready var _base_default_position : Vector2 = _base.position
 @onready var _tip_default_position : Vector2 = _tip.position
 
@@ -98,8 +96,11 @@ func _is_point_inside_joystick_area(point: Vector2) -> bool:
 	var y: bool = point.y >= global_position.y and point.y <= global_position.y + (size.y * get_global_transform_with_canvas().get_scale().y)
 	return x and y
 
+func _get_base_radius() -> float:
+	return _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
+
 func _is_point_inside_base(point: Vector2) -> bool:
-	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
+	_base_radius = _get_base_radius()
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = point - center
 	if vector.length_squared() <= _base_radius.x * _base_radius.x:
@@ -108,7 +109,7 @@ func _is_point_inside_base(point: Vector2) -> bool:
 		return false
 
 func _update_joystick(touch_position: Vector2) -> void:
-	_base_radius = _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
+	_base_radius = _get_base_radius()
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = touch_position - center
 	vector = vector.limit_length(clampzone_size)
