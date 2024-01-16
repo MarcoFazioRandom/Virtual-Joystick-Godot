@@ -47,6 +47,7 @@ func _process(delta: float) -> void:
 - Joystick mode:
 	- Fixed: The joystick doesn't move.
 	- Dynamic: Every time the joystick area is pressed, the joystick position is set on the touched position.
+	- Followinf: When the finger moves outside the joystick area, the joystick will follow it.
 
 - Dead zone size: If the tip is inside this range the output is zero.
 
