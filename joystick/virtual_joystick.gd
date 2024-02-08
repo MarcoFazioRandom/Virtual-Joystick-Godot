@@ -27,11 +27,12 @@ enum Joystick_mode {
 
 enum Visibility_mode {
 	ALWAYS, ## Always visible
-	TOUCHSCREEN_ONLY ## Visible on touch screens only
+	TOUCHSCREEN_ONLY, ## Visible on touch screens only
+	WHEN_TOUCHED ## Visible only when touched
 }
 
 ## If the joystick is always visible, or is shown only if there is a touchscreen
-@export var visibility_mode := Visibility_mode.ALWAYS
+@export var visibility_mode := Visibility_mode.WHEN_TOUCHED
 
 ## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map)
 @export var use_input_actions := true
@@ -64,7 +65,7 @@ var _touch_index : int = -1
 # FUNCTIONS
 
 func _ready() -> void:
-	if not DisplayServer.is_touchscreen_available() and visibility_mode == Visibility_mode.TOUCHSCREEN_ONLY:
+	if not DisplayServer.is_touchscreen_available() and (visibility_mode == Visibility_mode.TOUCHSCREEN_ONLY or visibility_mode == Visibility_mode.WHEN_TOUCHED):
 		hide()
 
 func _input(event: InputEvent) -> void:
@@ -88,6 +89,7 @@ func _input(event: InputEvent) -> void:
 
 func _move_base(new_position: Vector2) -> void:
 	_base.global_position = new_position - _base.pivot_offset * get_global_transform_with_canvas().get_scale()
+	show()
 
 func _move_tip(new_position: Vector2) -> void:
 	_tip.global_position = new_position - _tip.pivot_offset * _base.get_global_transform_with_canvas().get_scale()
@@ -163,3 +165,5 @@ func _reset():
 		for action in [action_left, action_right, action_down, action_up]:
 			if Input.is_action_pressed(action) or Input.is_action_just_pressed(action):
 				Input.action_release(action)
+	if visibility_mode == Visibility_mode.WHEN_TOUCHED:
+		hide()
