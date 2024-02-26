@@ -1,6 +1,6 @@
 # Godot Virtual Joystick
 
-<img src="previews/icon.png" width="200">
+<img src="addons/virtual_joystick/previews/icon.png" width="200">
 
 A simple virtual joystick for touchscreens, with useful options.
 
@@ -10,7 +10,7 @@ Godot Engine: https://godotengine.org
 
 ## PREVIEWS:
 
-<img src="previews/preview1.png" width="300">    <img src="previews/preview2.png" width="300">
+<img src="addons/virtual_joystick/previews/preview1.png" width="300">    <img src="addons/virtual_joystick/previews/preview2.png" width="300">
 
 Easy to use:
 
