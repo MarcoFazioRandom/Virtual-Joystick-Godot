@@ -10,10 +10,13 @@ config_version=5
 
 [application]
 
-config/name="virtual joysitck v4"
-run/main_scene="res://test/test.tscn"
+config/name="Virtual joystick Plugin"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/virtual_joystick/plugin.cfg")
 
 [input_devices]
 

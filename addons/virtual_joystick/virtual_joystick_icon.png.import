@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkvmydfn5saxg"
-path="res://.godot/imported/joystick_tip.png-3a18c9ea76fb1ca4d2905a9a7401093a.ctex"
+uid="uid://dyngdl4xiinc"
+path="res://.godot/imported/virtual_joystick_icon.png-de46b24999f9aaea71ffaa7771da41e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://joystick/textures/joystick_tip.png"
-dest_files=["res://.godot/imported/joystick_tip.png-3a18c9ea76fb1ca4d2905a9a7401093a.ctex"]
+source_file="res://addons/virtual_joystick/virtual_joystick_icon.png"
+dest_files=["res://.godot/imported/virtual_joystick_icon.png-de46b24999f9aaea71ffaa7771da41e6.ctex"]
 
 [params]
 
