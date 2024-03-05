@@ -53,8 +53,9 @@ func _process(delta: float) -> void:
 - Clamp zone size: The max distance the tip can reach.
 
 - Visibility mode:
-	- Always: Always visible.
+	- always: Always visible.
 	- touchscreen only: Visible on touch screens only (will hide if the device has not a touchscreen).
+	- when_touched: Visible only when touched.
 
 - Use input actions: if true the joystick will trigger the input actions created in Project -> Project Settings -> Input Map
 

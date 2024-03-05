@@ -27,7 +27,8 @@ enum Joystick_mode {
 
 enum Visibility_mode {
 	ALWAYS, ## Always visible
-	TOUCHSCREEN_ONLY ## Visible on touch screens only
+	TOUCHSCREEN_ONLY, ## Visible on touch screens only
+	WHEN_TOUCHED ## Visible only when touched
 }
 
 ## If the joystick is always visible, or is shown only if there is a touchscreen
@@ -69,7 +70,10 @@ func _ready() -> void:
 	if not ProjectSettings.get_setting("input_devices/pointing/emulate_touch_from_mouse"):
 		printerr("The Project Setting 'emulate_touch_from_mouse' should be set to True")
 	
-	if not DisplayServer.is_touchscreen_available() and visibility_mode == Visibility_mode.TOUCHSCREEN_ONLY:
+	if not DisplayServer.is_touchscreen_available() and visibility_mode == Visibility_mode.TOUCHSCREEN_ONLY :
+		hide()
+	
+	if visibility_mode == Visibility_mode.WHEN_TOUCHED:
 		hide()
 
 func _input(event: InputEvent) -> void:
@@ -79,12 +83,16 @@ func _input(event: InputEvent) -> void:
 				if joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING or (joystick_mode == Joystick_mode.FIXED and _is_point_inside_base(event.position)):
 					if joystick_mode == Joystick_mode.DYNAMIC or joystick_mode == Joystick_mode.FOLLOWING:
 						_move_base(event.position)
+					if visibility_mode == Visibility_mode.WHEN_TOUCHED:
+						show()
 					_touch_index = event.index
 					_tip.modulate = pressed_color
 					_update_joystick(event.position)
 					get_viewport().set_input_as_handled()
 		elif event.index == _touch_index:
 			_reset()
+			if visibility_mode == Visibility_mode.WHEN_TOUCHED:
+				hide()
 			get_viewport().set_input_as_handled()
 	elif event is InputEventScreenDrag:
 		if event.index == _touch_index:
