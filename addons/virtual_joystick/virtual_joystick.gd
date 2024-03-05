@@ -134,28 +134,18 @@ func _update_joystick(touch_position: Vector2) -> void:
 	
 	if use_input_actions:
 		if output.x > 0:
-			if Input.is_action_pressed(action_left):
-				Input.action_release(action_left)
-			_update_input_action(action_right, output.x)
+			Input.action_release(action_left)
+			Input.action_press(action_right, output.x)
 		else:
-			if Input.is_action_pressed(action_right):
-				Input.action_release(action_right)
-			_update_input_action(action_left, -output.x)
+			Input.action_release(action_right)
+			Input.action_press(action_left, -output.x)
 
 		if output.y > 0:
-			if Input.is_action_pressed(action_up):
-				Input.action_release(action_up)
-			_update_input_action(action_down, output.y)
+			Input.action_release(action_up)
+			Input.action_press(action_down, output.y)
 		else:
-			if Input.is_action_pressed(action_down):
-				Input.action_release(action_down)
-			_update_input_action(action_up, -output.y)
-
-func _update_input_action(action:String, value:float):
-	if value > InputMap.action_get_deadzone(action):
-		Input.action_press(action, value)
-	elif Input.is_action_pressed(action):
-		Input.action_release(action)
+			Input.action_release(action_down)
+			Input.action_press(action_up, -output.y)
 
 func _reset():
 	is_pressed = false
@@ -166,5 +156,4 @@ func _reset():
 	_tip.position = _tip_default_position
 	if use_input_actions:
 		for action in [action_left, action_right, action_down, action_up]:
-			if Input.is_action_pressed(action) or Input.is_action_just_pressed(action):
-				Input.action_release(action)
+			Input.action_release(action)
