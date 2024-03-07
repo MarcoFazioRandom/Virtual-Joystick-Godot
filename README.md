@@ -74,7 +74,7 @@ Project -> Project Settings -> General -> Input Devices
 "emulate mouse from touch" OFF  
 
 ### The joystick doesn't work when using Input.get_vector():
-⚠ **This has been fixed in Godot Engine!**  
+⚠ **This has been fixed in Godot Engine 4.2.1**  
 Unfortunately, this a bug in the Godot engine, so the only solution for now is using Input.get_axis:  
 This doesn't work:
 ```gdscript
