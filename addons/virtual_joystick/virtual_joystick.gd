@@ -25,6 +25,21 @@ enum Joystick_mode {
 ## If the joystick stays in the same position or appears on the touched position when touch is started
 @export var joystick_mode := Joystick_mode.FIXED
 
+enum Joystick_stickiness {
+	NO_STICKINESS, ## The joystick will reset its position on touch release.
+	STICKY, ## The joystick will stick to the last position.
+}
+
+@export var stickiness := Joystick_stickiness.NO_STICKINESS
+
+enum Joystick_directions {
+	ALL, ## The joystick can move in all directions.
+	HORIZONTAL, ## The joystick can only move horizontally.
+	VERTICAL ## The joystick can only move vertically.
+}
+
+@export var directions := Joystick_directions.ALL
+
 enum Visibility_mode {
 	ALWAYS, ## Always visible
 	TOUCHSCREEN_ONLY, ## Visible on touch screens only
@@ -76,8 +91,6 @@ func _ready() -> void:
 	if visibility_mode == Visibility_mode.WHEN_TOUCHED:
 		hide()
 
-	_reset()
-
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed:
@@ -128,12 +141,22 @@ func _update_joystick(touch_position: Vector2) -> void:
 	var _base_radius = _get_base_radius()
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = touch_position - center
+	
+	match directions:	
+		Joystick_directions.HORIZONTAL:
+			vector.y = 0
+		Joystick_directions.VERTICAL:
+			vector.x = 0
+		
 	vector = vector.limit_length(clampzone_size)
 	
 	if joystick_mode == Joystick_mode.FOLLOWING and touch_position.distance_to(center) > clampzone_size:
 		_move_base(touch_position - vector)
 	
+
+	
 	_move_tip(center + vector)
+	
 	
 	if vector.length_squared() > deadzone_size * deadzone_size:
 		is_pressed = true
@@ -144,33 +167,45 @@ func _update_joystick(touch_position: Vector2) -> void:
 	
 	if use_input_actions:
 		# Release actions
-		if output.x >= 0 and Input.is_action_pressed(action_left):
+		if not directions == Joystick_directions.VERTICAL and output.x >= 0 and Input.is_action_pressed(action_left):
 			Input.action_release(action_left)
-		if output.x <= 0 and Input.is_action_pressed(action_right):
+		if not directions == Joystick_directions.VERTICAL and output.x <= 0 and Input.is_action_pressed(action_right):
 			Input.action_release(action_right)
-		if output.y >= 0 and Input.is_action_pressed(action_up):
+		if not directions == Joystick_directions.HORIZONTAL and output.y >= 0 and Input.is_action_pressed(action_up):
 			Input.action_release(action_up)
-		if output.y <= 0 and Input.is_action_pressed(action_down):
+		if not directions == Joystick_directions.HORIZONTAL and output.y <= 0 and Input.is_action_pressed(action_down):
 			Input.action_release(action_down)
 		# Press actions
-		if output.x < 0:
+		if not directions == Joystick_directions.VERTICAL and output.x < 0:
 			Input.action_press(action_left, -output.x)
-		if output.x > 0:
+		if not directions == Joystick_directions.VERTICAL and output.x > 0:
 			Input.action_press(action_right, output.x)
-		if output.y < 0:
+		if not directions == Joystick_directions.HORIZONTAL and output.y < 0:
 			Input.action_press(action_up, -output.y)
-		if output.y > 0:
+		if not directions == Joystick_directions.HORIZONTAL and output.y > 0:
 			Input.action_press(action_down, output.y)
 
 func _reset():
 	is_pressed = false
-	output = Vector2.ZERO
 	_touch_index = -1
 	_tip.modulate = _default_color
-	_base.position = _base_default_position
-	_tip.position = _tip_default_position
-	# Release actions
-	if use_input_actions:
-		for action in [action_left, action_right, action_down, action_up]:
-			if Input.is_action_pressed(action):
-				Input.action_release(action)
+	if stickiness == Joystick_stickiness.NO_STICKINESS:
+		# Reset positions
+		_move_base(_base_default_position)
+		_move_tip(_tip_default_position)
+	
+		output = Vector2.ZERO
+		_base.position = _base_default_position
+		_tip.position = _tip_default_position
+		# Release actions
+
+	if use_input_actions and stickiness == Joystick_stickiness.NO_STICKINESS:
+		if not directions == Joystick_directions.HORIZONTAL:
+			for action in [action_down, action_up]:
+				if Input.is_action_pressed(action):
+					Input.action_release(action)
+		if not directions == Joystick_directions.VERTICAL:
+			for action in [action_left, action_right]:
+				if Input.is_action_pressed(action):
+					Input.action_release(action)
+
