@@ -5,6 +5,9 @@ extends Control
 ## A simple virtual joystick for touchscreens, with useful options.
 ## Github: https://github.com/MarcoFazioRandom/Virtual-Joystick-Godot
 
+signal Pressed()
+signal Released()
+
 # EXPORTED VARIABLE
 
 ## The color of the button when the joystick is pressed.
@@ -137,9 +140,11 @@ func _update_joystick(touch_position: Vector2) -> void:
 	
 	if vector.length_squared() > deadzone_size * deadzone_size:
 		is_pressed = true
+		Pressed.emit()
 		output = (vector - (vector.normalized() * deadzone_size)) / (clampzone_size - deadzone_size)
 	else:
 		is_pressed = false
+		Released.emit()
 		output = Vector2.ZERO
 	
 	if use_input_actions:
@@ -164,6 +169,7 @@ func _update_joystick(touch_position: Vector2) -> void:
 
 func _reset():
 	is_pressed = false
+	Released.emit()
 	output = Vector2.ZERO
 	_touch_index = -1
 	_tip.modulate = _default_color
