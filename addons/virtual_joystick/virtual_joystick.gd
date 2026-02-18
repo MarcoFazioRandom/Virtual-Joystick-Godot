@@ -2,11 +2,11 @@ class_name VirtualJoystick
 
 extends Control
 
-## A simple virtual joystick for touchscreens, with useful options.
-## Github: https://github.com/MarcoFazioRandom/Virtual-Joystick-Godot
-
 signal Pressed()
 signal Released()
+
+## A simple virtual joystick for touchscreens, with useful options.
+## Github: https://github.com/MarcoFazioRandom/Virtual-Joystick-Godot
 
 # EXPORTED VARIABLE
 
@@ -139,12 +139,12 @@ func _update_joystick(touch_position: Vector2) -> void:
 	_move_tip(center + vector)
 	
 	if vector.length_squared() > deadzone_size * deadzone_size:
+		if not is_pressed: Pressed.emit()
 		is_pressed = true
-		Pressed.emit()
 		output = (vector - (vector.normalized() * deadzone_size)) / (clampzone_size - deadzone_size)
 	else:
+		if is_pressed: Released.emit()
 		is_pressed = false
-		Released.emit()
 		output = Vector2.ZERO
 	
 	if use_input_actions:
@@ -168,8 +168,8 @@ func _update_joystick(touch_position: Vector2) -> void:
 			Input.action_press(action_down, output.y)
 
 func _reset():
+	if is_pressed: Released.emit()
 	is_pressed = false
-	Released.emit()
 	output = Vector2.ZERO
 	_touch_index = -1
 	_tip.modulate = _default_color
