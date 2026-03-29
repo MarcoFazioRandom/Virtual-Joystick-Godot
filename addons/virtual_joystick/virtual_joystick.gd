@@ -76,6 +76,14 @@ func _ready() -> void:
 	if visibility_mode == Visibility_mode.WHEN_TOUCHED:
 		hide()
 
+	call_deferred("_post_layout_init")
+
+func _post_layout_init() -> void:
+	# These 2 variables do not have the correct values until after the containers have
+	# laid them out. So we wait for that to happen.
+	# Also _reset() can't be called before these variables have the correct values.
+	_base_default_position = _base.position
+	_tip_default_position = _tip.position
 	_reset()
 
 func _input(event: InputEvent) -> void:
